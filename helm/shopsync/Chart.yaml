@@ -1,0 +1,27 @@
+apiVersion: v2
+name: shopsync
+description: Enterprise Shopify-to-PostgreSQL data pipeline with sync, scheduling, and analytics
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - shopify
+  - postgresql
+  - sync
+  - analytics
+  - data-pipeline
+  - ecommerce
+  - power-bi
+home: https://github.com/implyfree/shopsync
+sources:
+  - https://github.com/implyfree/shopsync
+maintainers:
+  - name: shyamkrishna21
+    email: shyam21091996@gmail.com
+icon: https://raw.githubusercontent.com/implyfree/shopsync/main/docs/icon.png
+
+dependencies:
+  - name: postgresql
+    version: "16.4.1"
+    repository: "oci://registry-1.docker.io/bitnamicharts"
+    condition: postgresql.enabled

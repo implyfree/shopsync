@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: shopsync
+      POSTGRES_PASSWORD: shopsync_secret
+      POSTGRES_DB: shopsync
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shopsync"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Runs DB schema migration once, then exits
+  migrate:
+    build: .
+    command: ["node", "server/scripts/initDb.js"]
+    environment:
+      # Points to the co-located Postgres container for table creation
+      DATABASE_URL: postgresql://shopsync:shopsync_secret@db:5432/shopsync
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Bootstrap DB connection — points to co-located Postgres container.
+      # Shopify store URL and API token are configured through the UI (Settings page).
+      DATABASE_URL: postgresql://shopsync:shopsync_secret@db:5432/shopsync
+      PORT: "3000"
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      # Persists UI-configured settings (DB URL override, Shopify creds)
+      - appdata:/app/data
+
+volumes:
+  pgdata:
+  appdata:

@@ -1,0 +1,140 @@
+# -- Number of ShopSync replicas
+replicaCount: 1
+
+image:
+  # -- Docker image repository
+  repository: shyamkrishna21/shopsync
+  # -- Docker image tag (defaults to Chart appVersion)
+  tag: latest
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+
+# -- Docker registry pull secrets
+imagePullSecrets: []
+# -- Override the chart name
+nameOverride: ""
+# -- Override the full release name
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Create a service account
+  create: true
+  # -- Service account annotations
+  annotations: {}
+  # -- Service account name (auto-generated if empty)
+  name: ""
+
+# -- Environment variables for ShopSync
+# DATABASE_URL is the bootstrap connection for the co-located or external PostgreSQL.
+# Shopify store URL and API token are configured through the ShopSync UI (Settings page).
+env:
+  DATABASE_URL: ""
+  PORT: "3000"
+  NODE_ENV: "production"
+
+# -- Use an existing Kubernetes secret for DATABASE_URL instead of creating one
+existingSecret:
+  enabled: false
+  name: ""
+  databaseUrlKey: "DATABASE_URL"
+
+service:
+  # -- Kubernetes service type
+  type: ClusterIP
+  # -- Service port
+  port: 80
+  # -- Container port
+  targetPort: 3000
+
+ingress:
+  # -- Enable ingress
+  enabled: false
+  # -- Ingress class name
+  className: ""
+  # -- Ingress annotations
+  annotations: {}
+  # -- Ingress hosts configuration
+  hosts:
+    - host: shopsync.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- Ingress TLS configuration
+  tls: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  # -- Enable HPA
+  enabled: false
+  # -- Minimum replicas
+  minReplicas: 1
+  # -- Maximum replicas
+  maxReplicas: 5
+  # -- Target CPU utilization
+  targetCPUUtilizationPercentage: 80
+
+# -- Node selector
+nodeSelector: {}
+# -- Tolerations
+tolerations: []
+# -- Affinity rules
+affinity: {}
+
+# -- Database migration job runs schema init before deployment
+migration:
+  enabled: true
+  backoffLimit: 3
+
+# -- Liveness and readiness probes
+probes:
+  liveness:
+    path: /api/health
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    timeoutSeconds: 5
+  readiness:
+    path: /api/health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 3
+
+# -- Persistent volume for UI-configured settings (data/settings.json)
+persistence:
+  enabled: true
+  size: 100Mi
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+
+# -- Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+# -- Container security context
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+# -- PostgreSQL subchart (Bitnami)
+# Set enabled: true to deploy PostgreSQL alongside ShopSync
+postgresql:
+  enabled: false
+  auth:
+    username: shopsync
+    password: shopsync-db-password
+    database: shopsync
+  primary:
+    persistence:
+      size: 5Gi

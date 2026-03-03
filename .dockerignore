@@ -1,0 +1,14 @@
+node_modules
+client/node_modules
+client/dist
+.env
+.env.*
+!.env.example
+data/settings.json
+.git
+.gitignore
+.vscode
+*.md
+.DS_Store
+Thumbs.db
+helm/

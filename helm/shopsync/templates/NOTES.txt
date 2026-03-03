@@ -1,0 +1,24 @@
+
+ShopSync has been deployed!
+
+1. Get the application URL:
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}
+{{- end }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "shopsync.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  kubectl get --namespace {{ .Release.Namespace }} svc {{ include "shopsync.fullname" . }} -w
+{{- else }}
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "shopsync.fullname" . }} 3000:{{ .Values.service.port }}
+  echo "Visit http://localhost:3000"
+{{- end }}
+
+2. Configure your Shopify store credentials through the UI Settings page.
+   DATABASE_URL is pre-configured via the Helm secret.
+   Shopify Store URL and API Token are set in the Settings page after login.
+
+3. Health check endpoint: /api/health

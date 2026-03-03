@@ -1,0 +1,24 @@
+{
+  "name": "shopsync",
+  "version": "1.0.0",
+  "description": "ShopSync — Enterprise Shopify-to-PostgreSQL data pipeline with sync, scheduling, and analytics",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "init-db": "node server/scripts/initDb.js",
+    "build": "cd client && npm run build",
+    "serve": "npm run build && npm start"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "node-cron": "^3.0.3",
+    "pg": "^8.11.3"
+  }
+}
