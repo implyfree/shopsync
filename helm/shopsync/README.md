@@ -10,22 +10,24 @@ Enterprise Shopify-to-PostgreSQL data pipeline with sync, scheduling, and analyt
 
 ## Installation
 
+### Add the Helm Repository
+
+```bash
+helm repo add shopsync https://implyfree.github.io/shopsync/
+helm repo update
+```
+
 ### Quick Install
 
 ```bash
-# Update dependencies (if using bundled PostgreSQL)
-cd helm/shopsync
-helm dependency update
-
-# Install in the shopsync namespace
-helm install shopsync . -n shopsync --create-namespace \
+helm install shopsync shopsync/shopsync -n shopsync --create-namespace \
   --set env.DATABASE_URL="postgresql://user:password@host:5432/dbname"
 ```
 
 ### Install with Bundled PostgreSQL
 
 ```bash
-helm install shopsync . -n shopsync --create-namespace \
+helm install shopsync shopsync/shopsync -n shopsync --create-namespace \
   --set postgresql.enabled=true \
   --set postgresql.auth.password=secure-password
 ```
@@ -33,7 +35,7 @@ helm install shopsync . -n shopsync --create-namespace \
 ### Install with Ingress
 
 ```bash
-helm install shopsync . -n shopsync --create-namespace \
+helm install shopsync shopsync/shopsync -n shopsync --create-namespace \
   --set env.DATABASE_URL="postgresql://user:password@host:5432/dbname" \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=shopsync.example.com \
@@ -150,7 +152,8 @@ kubectl -n shopsync port-forward svc/shopsync 3000:80
 ## Upgrading
 
 ```bash
-helm upgrade shopsync . -n shopsync
+helm repo update
+helm upgrade shopsync shopsync/shopsync -n shopsync
 ```
 
 ## Uninstalling
@@ -169,7 +172,7 @@ kubectl delete namespace shopsync
 ## Using External PostgreSQL
 
 ```bash
-helm install shopsync . -n shopsync --create-namespace \
+helm install shopsync shopsync/shopsync -n shopsync --create-namespace \
   --set postgresql.enabled=false \
   --set env.DATABASE_URL="postgresql://user:password@your-postgres-host:5432/dbname"
 ```
@@ -177,7 +180,7 @@ helm install shopsync . -n shopsync --create-namespace \
 Or use an existing Kubernetes secret:
 
 ```bash
-helm install shopsync . -n shopsync --create-namespace \
+helm install shopsync shopsync/shopsync -n shopsync --create-namespace \
   --set postgresql.enabled=false \
   --set existingSecret.enabled=true \
   --set existingSecret.name=my-db-secret \
