@@ -4,9 +4,13 @@
 
 ShopSync connects your Shopify store to a PostgreSQL database, enabling advanced analytics with tools like Power BI, Grafana, or any SQL-based reporting tool. It provides a beautiful web UI for managing syncs, viewing data, and monitoring pipeline health.
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/shopsync)](https://artifacthub.io/packages/search?repo=shopsync)
 [![Docker Image](https://img.shields.io/docker/v/shyamkrishna21/shopsync?sort=semver&label=Docker%20Hub)](https://hub.docker.com/r/shyamkrishna21/shopsync)
+[![Docker Pulls](https://img.shields.io/docker/pulls/shyamkrishna21/shopsync)](https://hub.docker.com/r/shyamkrishna21/shopsync)
+[![GitHub Release](https://img.shields.io/github/v/release/implyfree/shopsync?label=Release)](https://github.com/implyfree/shopsync/releases/latest)
 [![Helm Chart](https://img.shields.io/badge/Helm-v1.0.0-blue?logo=helm)](./helm/shopsync)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub Pages](https://img.shields.io/badge/Docs-GitHub%20Pages-blue?logo=github)](https://implyfree.github.io/shopsync)
 
 ---
 
