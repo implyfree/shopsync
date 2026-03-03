@@ -3,7 +3,7 @@ entries:
   shopsync:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2026-03-03T22:40:08.0797+05:30"
+    created: "2026-03-03T23:20:34.80422+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -11,7 +11,7 @@ entries:
       version: 16.4.1
     description: Enterprise Shopify-to-PostgreSQL data pipeline with sync, scheduling,
       and analytics
-    digest: 95a7effdf26c1a858c506b107f4879e604428a574d6ae85672e98dc0ce643fcc
+    digest: 4a28281b09f872fb2829809a3aca51e6e3987a7f796ca1621d297c86bdf758c5
     home: https://github.com/implyfree/shopsync
     icon: https://raw.githubusercontent.com/implyfree/shopsync/main/docs/icon.png
     keywords:
@@ -32,4 +32,4 @@ entries:
     urls:
     - https://implyfree.github.io/shopsync/shopsync-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-03T22:40:08.075649+05:30"
+generated: "2026-03-03T23:20:34.796816+05:30"
